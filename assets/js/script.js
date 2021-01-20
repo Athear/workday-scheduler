@@ -1,11 +1,3 @@
-{/* <div class="row">
-<div class="col-md-1"></div>
-<div class="col-md-1 border-top border-bottom border-secondary border-right">hour</div>
-<div class="col-md-8 bg-success border-top border-bottom border-white">notes!</div>
-<div class="col-md-1 bg-primary border-primary rounded-right"><button class="btn btn-primary">Save</button></div>
-<div class="col-md-1"></div>
-</div> */}
-
 //present the current day
 $("#currentDay").text(luxon.DateTime.local().toLocaleString({weekday:'long',month:'long',day:'2-digit'}))
 
@@ -13,6 +5,17 @@ $("#currentDay").text(luxon.DateTime.local().toLocaleString({weekday:'long',mont
 const dayStartHour = 8
 const dayEndHour = 17
 var currentHour = luxon.DateTime.local().hour;
+
+//use BEL character as array divider, in case user adds commas to notes
+var bel = "\u2407"
+//Fetch or initialize the array of entries for the time blocks
+var timeBlockNoteArray = localStorage.getItem("timeBlockNoteArray")
+if(!timeBlockNoteArray){
+    timeBlockNoteArray = [];
+}else{
+    timeBlockNoteArray = timeBlockNoteArray.split(bel);
+}
+
 
 function addTimeBlock(index){
     var bgColor
@@ -26,6 +29,7 @@ function addTimeBlock(index){
         bgColor = "bg-danger"
     }
 
+    //TODO: use the classes given in sytle.css
     var timeRow = $("<div class='row'>");
     var bufferLeft = $("<div class='col-md-1'>");
     var hourBlock = $("<div class='col-md-1 border-top border-bottom border-secondary border-right'>");
@@ -35,14 +39,11 @@ function addTimeBlock(index){
 
     hourBlock.text(hour.toLocaleString({hour:'numeric'}));
 
-    var timeBlockNotes = localStorage.getItem(hour.hour+"Input");
-    textBlock.attr("value",timeBlockNotes);
+    textBlock.attr("value",timeBlockNoteArray[hour.hour]);
 
     timeRow.append(bufferLeft,hourBlock,textBlock,saveBlock,bufferRight);
     $("#timeblock-container").append(timeRow);
 }
-
-
 
 
 for(var i = dayStartHour; i<dayEndHour;i++){
@@ -52,6 +53,6 @@ for(var i = dayStartHour; i<dayEndHour;i++){
 $(".save-button").on("click", function(){
     //a selector based on a data attribute
     assocBlock = $("[data-hour-id="+$(this).data("button-hour")+"]")
-    assocBlock.attr("value",$(this).data("button-hour")+" clicked!");
-    localStorage.setItem($(this).data("button-hour")+"Input",assocBlock.val());
+    timeBlockNoteArray[$(this).data("button-hour")]=assocBlock.val();
+    localStorage.setItem("timeBlockNoteArray",timeBlockNoteArray.join(bel))
 })
