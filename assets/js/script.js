@@ -6,6 +6,8 @@
 <div class="col-md-1"></div>
 </div> */}
 
+//present the current day
+$("#currentDay").text(luxon.DateTime.local().toLocaleString({weekday:'long',month:'long',day:'2-digit'}))
 
 //dayStart and dayEnd are in 24-hour format
 const dayStart = 8
