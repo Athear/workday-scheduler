@@ -10,16 +10,17 @@
 $("#currentDay").text(luxon.DateTime.local().toLocaleString({weekday:'long',month:'long',day:'2-digit'}))
 
 //dayStart and dayEnd are in 24-hour format
-const dayStart = 8
-const dayEnd = 17
+const dayStartHour = 8
+const dayEndHour = 17
 var currentHour = luxon.DateTime.local().hour;
 
-function addTimeBlock(hour){
+function addTimeBlock(index){
     var bgColor
+    var hour = luxon.DateTime.fromObject({hour:index,zone:'local'})
 
-    if(hour<currentHour){
+    if(hour.hour<currentHour){
         bgColor = "bg-secondary"
-    }else if(hour>currentHour){
+    }else if(hour.hour>currentHour){
         bgColor = "bg-success"
     }else{
         bgColor = "bg-danger"
@@ -28,17 +29,13 @@ function addTimeBlock(hour){
     var timeRow = $("<div class='row'>");
     var bufferLeft = $("<div class='col-md-1'>");
     var hourBlock = $("<div class='col-md-1 border-top border-bottom border-secondary border-right'>");
-    var textBlock = $("<input type='text' data-hour-id="+hour+" class='col-md-8 "+bgColor+" border-top border-bottom border-white event-text'>");
-    var saveBlock = $("<div class='col-md-1 bg-primary border-primary rounded-right'><button data-button-hour="+hour+" class='btn btn-primary save-button'>Save</button></div>")
+    var textBlock = $("<input type='text' data-hour-id="+hour.hour+" class='col-md-8 "+bgColor+" border-top border-bottom border-white event-text'>");
+    var saveBlock = $("<div class='col-md-1 bg-primary border-primary rounded-right'><button data-button-hour="+hour.hour+" class='btn btn-primary save-button'>Save</button></div>")
     var bufferRight = $("<div class='col-md-1'>");
 
-    if(hour>12){
-        hourBlock.text(hour-12+"PM")
-    }else{
-        hourBlock.text(hour+"AM")
-    }
+    hourBlock.text(hour.toLocaleString({hour:'numeric'}));
 
-    textBlock.attr("value","notes");
+    // textBlock.attr("value","notes");
 
     timeRow.append(bufferLeft,hourBlock,textBlock,saveBlock,bufferRight);
     $("#timeblock-container").append(timeRow);
@@ -47,11 +44,13 @@ function addTimeBlock(hour){
 
 
 
-for(var i = dayStart; i<dayEnd;i++){
+for(var i = dayStartHour; i<dayEndHour;i++){
     addTimeBlock(i);
 }
 
 $(".save-button").on("click", function(){
-    $("[data-hour-id="+$(this).data("button-hour")+"]").attr("value",$(this).data("button-hour")+" clicked!");
-    //$(".event-text").attr("value",$(this).data("button-hour")+" clicked!");
+    //a selector based on a data attribute
+    assocBlock = $("[data-hour-id="+$(this).data("button-hour")+"]")
+    assocBlock.attr("value",$(this).data("button-hour")+" clicked!");
+    // localStorage.setItem($(this).data("button-hour")+"Input",assocBlock.val());
 })
