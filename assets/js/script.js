@@ -35,7 +35,8 @@ function addTimeBlock(index){
 
     hourBlock.text(hour.toLocaleString({hour:'numeric'}));
 
-    // textBlock.attr("value","notes");
+    var timeBlockNotes = localStorage.getItem(hour.hour+"Input");
+    textBlock.attr("value",timeBlockNotes);
 
     timeRow.append(bufferLeft,hourBlock,textBlock,saveBlock,bufferRight);
     $("#timeblock-container").append(timeRow);
@@ -52,5 +53,5 @@ $(".save-button").on("click", function(){
     //a selector based on a data attribute
     assocBlock = $("[data-hour-id="+$(this).data("button-hour")+"]")
     assocBlock.attr("value",$(this).data("button-hour")+" clicked!");
-    // localStorage.setItem($(this).data("button-hour")+"Input",assocBlock.val());
+    localStorage.setItem($(this).data("button-hour")+"Input",assocBlock.val());
 })
