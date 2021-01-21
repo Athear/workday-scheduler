@@ -2,8 +2,8 @@
 $("#currentDay").text(luxon.DateTime.local().toLocaleString({weekday:'long',month:'long',day:'2-digit'}))
 
 //dayStart and dayEnd are in 24-hour format
-const dayStartHour = 8
-const dayEndHour = 17
+const dayStartHour = 15
+const dayEndHour = 23
 var currentHour = luxon.DateTime.local().hour;
 
 //use BEL character as array divider, in case user adds commas to notes
@@ -22,11 +22,11 @@ function addTimeBlock(index){
     var hour = luxon.DateTime.fromObject({hour:index,zone:'local'})
 
     if(hour.hour<currentHour){
-        bgColor = "bg-secondary"
+        bgColor = "past"
     }else if(hour.hour>currentHour){
-        bgColor = "bg-success"
+        bgColor = "future"
     }else{
-        bgColor = "bg-danger"
+        bgColor = "present"
     }
 
     //TODO: use the classes given in sytle.css
