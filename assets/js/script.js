@@ -30,10 +30,10 @@ function addTimeBlock(index){
     }
 
     //TODO: use the classes given in sytle.css
-    var timeRow = $("<div class='row'>");
+    var timeRow = $("<div class='row time-block'>");
     var bufferLeft = $("<div class='col-md-1'>");
-    var hourBlock = $("<div class='col-md-1 border-top border-bottom border-secondary border-right'>");
-    var textBlock = $("<input type='text' data-hour-id="+hour.hour+" class='col-md-8 "+bgColor+" border-top border-bottom border-white event-text'>");
+    var hourBlock = $("<div class='col-md-1 hour'>");
+    var textBlock = $("<textarea type='text' data-hour-id="+hour.hour+" class='col-md-8 "+bgColor+"'>");
     var saveBlock = $("<div class='col-md-1 bg-primary border-primary rounded-right'><button data-button-hour="+hour.hour+" class='btn btn-primary save-button'>Save</button></div>")
     var bufferRight = $("<div class='col-md-1'>");
 
